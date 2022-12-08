@@ -1,6 +1,7 @@
 package com.etiya.ecommercedemopair1.business.concretes;
 
 import com.etiya.ecommercedemopair1.business.abstracts.CategoryService;
+import com.etiya.ecommercedemopair1.business.constants.Messages;
 import com.etiya.ecommercedemopair1.business.dtos.request.category.AddCategoryRequest;
 import com.etiya.ecommercedemopair1.business.dtos.response.category.GetCategoryResponse;
 import com.etiya.ecommercedemopair1.core.util.mapping.ModelMapperService;
@@ -81,7 +82,7 @@ public class CategoryManager implements CategoryService {
 
         for (Category secondCategory : categories) {
             if (secondCategory.getName().equals(category.getName())) {
-                throw new RuntimeException("This category already exists");
+                throw new RuntimeException(Messages.Category.categoryNameExists);
             }
         }
     }

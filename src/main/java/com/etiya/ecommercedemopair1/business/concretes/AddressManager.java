@@ -4,6 +4,7 @@ import com.etiya.ecommercedemopair1.business.abstracts.AddressService;
 import com.etiya.ecommercedemopair1.business.abstracts.CityService;
 import com.etiya.ecommercedemopair1.business.abstracts.CountryService;
 import com.etiya.ecommercedemopair1.business.abstracts.UserService;
+import com.etiya.ecommercedemopair1.business.constants.Messages;
 import com.etiya.ecommercedemopair1.business.dtos.request.address.AddAddressRequest;
 import com.etiya.ecommercedemopair1.business.dtos.response.address.GetAddressResponse;
 import com.etiya.ecommercedemopair1.core.util.mapping.ModelMapperService;
@@ -87,7 +88,7 @@ public class AddressManager implements AddressService {
 
         boolean isExist = userService.existsById(id);
         if (!isExist) {
-            throw new RuntimeException("This user doesn't exist");
+            throw new RuntimeException(Messages.User.userExists);
         }
     }
 
@@ -95,7 +96,7 @@ public class AddressManager implements AddressService {
 
         boolean isExist = cityService.existsById(id);
         if (!isExist) {
-            throw new RuntimeException("This city doesn't exist");
+            throw new RuntimeException(Messages.City.cityExists);
         }
     }
 
@@ -103,7 +104,7 @@ public class AddressManager implements AddressService {
 
         boolean isExist = countryService.existsById(id);
         if (!isExist) {
-            throw new RuntimeException("This country doesn't exist");
+            throw new RuntimeException(Messages.Country.countryExists);
         }
     }
 }

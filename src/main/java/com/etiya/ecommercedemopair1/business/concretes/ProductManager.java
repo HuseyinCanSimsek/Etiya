@@ -1,6 +1,7 @@
 package com.etiya.ecommercedemopair1.business.concretes;
 
 import com.etiya.ecommercedemopair1.business.abstracts.ProductService;
+import com.etiya.ecommercedemopair1.business.constants.Messages;
 import com.etiya.ecommercedemopair1.business.dtos.request.product.AddProductRequest;
 import com.etiya.ecommercedemopair1.business.dtos.response.product.GetProductResponse;
 import com.etiya.ecommercedemopair1.core.util.mapping.ModelMapperService;
@@ -73,7 +74,7 @@ public class ProductManager implements ProductService {
     public void checkCategoryWithId(int id) {
         boolean isExists = categoryRepository.existsById(id);
         if (!isExists) {
-            throw new RuntimeException("This category doesn't exist. Could not be added prod");
+            throw new RuntimeException(Messages.Category.categoryExistsInProduct);
         }
     }
 

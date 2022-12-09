@@ -54,10 +54,10 @@ public class CustomersController {
         return new ResponseEntity<GetCustomerResponse>(customerService.addCustomerWithCustomerInfo(addCustomerRequest),
                 HttpStatus.CREATED);
     }
-    @GetMapping("/getCartWithCustomerId")
-    public List<GetCustomerResponse> getCartWithCustomerId(String gender)
+    @GetMapping("/getCustomerResponseWithGender")
+    public @ResponseBody List<GetCustomerResponse> getCustomerResponsesWithGender(@RequestParam("gender") String gender)
     {
-        return customerService.getCartWithCustomerId(gender);
+        return customerService.getCustomerResponseWithGender(gender);
     }
 
 

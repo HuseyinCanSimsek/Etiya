@@ -20,8 +20,9 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     String findEmailByName(String name);
     @Query("select c from Customer c where c.gender=:gender")
     List<Customer> getCustomerWithGender(String gender);
-    @Query("select new com.etiya.ecommercedemopair1.business.dtos.response.cart.GetCartResponse(c.id,c.totalPrice) from Customer as c where c.gender=:gender")
-   List<GetCustomerResponse> getCartWithCustomerId(String gender);
+    @Query("select new com.etiya.ecommercedemopair1.business.dtos.response.customer.GetCustomerResponse(c.id,c.email,c.name,c.phone,c.birth_date,c.gender) from Customer as c where c.gender=:gender " +
+            "group by c.id,c.email,c.name,c.phone,c.birth_date,c.gender")
+   List<GetCustomerResponse> getCustomerResponseWithGender(String gender);
 
 
 //    @Query("Select c from Address as a join a.User as u join u.Customer as c Where a.id=:id")

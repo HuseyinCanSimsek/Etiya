@@ -44,7 +44,7 @@ public class AddressesController {
         return new ResponseEntity<GetAddressResponse>(this.addressService.getAddressWithInfo(addAddressRequest), HttpStatus.CREATED);
     }
     @GetMapping("/getOrderWithAddressId")
-    public List<GetOrderResponse> getOrderWithAddressId(int id)
+    public @ResponseBody List<GetOrderResponse> getOrderWithAddressId(int id)
     {
         return addressService.getOrderWithAddressId(id);
     }

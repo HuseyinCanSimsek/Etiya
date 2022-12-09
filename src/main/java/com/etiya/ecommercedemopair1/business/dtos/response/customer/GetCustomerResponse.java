@@ -16,6 +16,6 @@ public class GetCustomerResponse {
     private String email;
     private String name;
     private String phone;
-    private Date birth_date;
+    private Date birthDate;
     private String gender;
 }

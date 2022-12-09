@@ -67,7 +67,7 @@ public class CustomerManager implements CustomerService {
     }
 
     @Override
-    public GetCartResponse getCartWithCustomerId(int identity) {
-        return customerRepository.getCartWithCustomerId(identity);
+    public List<GetCustomerResponse> getCartWithCustomerId(String gender) {
+        return customerRepository.getCartWithCustomerId(gender);
     }
 }

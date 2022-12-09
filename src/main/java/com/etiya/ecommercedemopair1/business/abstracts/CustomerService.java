@@ -19,6 +19,6 @@ public interface CustomerService {
     void addCustomer(AddCustomerRequest addCustomerRequest); // Sadece Request'li görelim.
 
     GetCustomerResponse addCustomerWithCustomerInfo(AddCustomerRequest addCustomerRequest); // Bir de Response'lu görelim.addCustomer gibi.
-    GetCartResponse getCartWithCustomerId(int identity);
+   List<GetCustomerResponse> getCartWithCustomerId(String gender);
 
 }

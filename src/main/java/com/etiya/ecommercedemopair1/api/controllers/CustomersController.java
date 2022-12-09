@@ -55,9 +55,9 @@ public class CustomersController {
                 HttpStatus.CREATED);
     }
     @GetMapping("/getCartWithCustomerId")
-    public GetCartResponse getCartWithCustomerId(int id)
+    public List<GetCustomerResponse> getCartWithCustomerId(String gender)
     {
-        return customerService.getCartWithCustomerId(id);
+        return customerService.getCartWithCustomerId(gender);
     }
 
 

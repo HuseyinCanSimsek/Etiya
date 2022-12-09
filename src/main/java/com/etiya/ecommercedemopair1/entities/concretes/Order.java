@@ -41,6 +41,6 @@ public class Order {
     private List<OrderDetail> orderDetails;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "order")
-    private List<Payment> payments ;
+    private List<Payment> payments;
 
 }

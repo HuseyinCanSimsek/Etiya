@@ -1,17 +1,12 @@
 package com.etiya.ecommercedemopair1.business.concretes;
 
-import com.etiya.ecommercedemopair1.business.abstracts.AddressService;
-import com.etiya.ecommercedemopair1.business.abstracts.CityService;
-import com.etiya.ecommercedemopair1.business.abstracts.CountryService;
-import com.etiya.ecommercedemopair1.business.abstracts.UserService;
+import com.etiya.ecommercedemopair1.business.abstracts.*;
 import com.etiya.ecommercedemopair1.business.constants.Messages;
 import com.etiya.ecommercedemopair1.business.dtos.request.address.AddAddressRequest;
 import com.etiya.ecommercedemopair1.business.dtos.response.address.GetAddressResponse;
+import com.etiya.ecommercedemopair1.business.dtos.response.order.GetOrderResponse;
 import com.etiya.ecommercedemopair1.core.util.mapping.ModelMapperService;
-import com.etiya.ecommercedemopair1.entities.concretes.Address;
-import com.etiya.ecommercedemopair1.entities.concretes.City;
-import com.etiya.ecommercedemopair1.entities.concretes.Country;
-import com.etiya.ecommercedemopair1.entities.concretes.User;
+import com.etiya.ecommercedemopair1.entities.concretes.*;
 import com.etiya.ecommercedemopair1.repository.abstracts.AddressRepository;
 import com.etiya.ecommercedemopair1.repository.abstracts.CityRepository;
 import com.etiya.ecommercedemopair1.repository.abstracts.CountryRepository;
@@ -31,7 +26,9 @@ public class AddressManager implements AddressService {
     private UserService userService;
     private CityService cityService;
     private CountryService countryService;
+    private OrderService orderService;
     private final ModelMapperService modelMapperService;
+
 
 
 
@@ -84,6 +81,11 @@ public class AddressManager implements AddressService {
         return getAddressResponse;
     }
 
+    @Override
+    public List<GetOrderResponse> getOrderWithAddressId(int id) {
+        return addressRepository.getOrderWithAddressId(id);
+    }
+
     private void checkUserExists(int id) {
 
         boolean isExist = userService.existsById(id);
@@ -106,5 +108,13 @@ public class AddressManager implements AddressService {
         if (!isExist) {
             throw new RuntimeException(Messages.Country.countryExists);
         }
+    }
+    private void checkOrderExistsAddressId(int id)
+    {
+        boolean isExist = orderService.existsByAddressId(id);
+        if (!isExist) {
+            throw new RuntimeException(Messages.Country.countryExists);
+        }
+
     }
 }

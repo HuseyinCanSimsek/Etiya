@@ -8,7 +8,7 @@ import com.etiya.ecommercedemopair1.business.dtos.request.product.AddProductRequ
 import com.etiya.ecommercedemopair1.business.dtos.response.product.GetProductResponse;
 import com.etiya.ecommercedemopair1.entities.concretes.Product;
 
-import org.springframework.data.repository.query.Param;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +21,7 @@ import java.util.List;
 public class ProductsController {
     private final ProductService productService;
 
+    @Autowired
     public ProductsController(ProductService productService) {
         this.productService = productService;
     }
@@ -64,6 +65,10 @@ public class ProductsController {
     @PostMapping("/adddone")
     public ResponseEntity<GetProductResponse> addProductOne(@RequestBody AddProductRequest addProductRequest) {
         return new ResponseEntity<GetProductResponse>(productService.addProduct(addProductRequest), HttpStatus.CREATED);
+    }
+    @GetMapping("/getProductCategories")
+    public @ResponseBody List<GetProductResponse> getProductCategories(int id) {
+        return productService.getProductCategories(id);
     }
 
 

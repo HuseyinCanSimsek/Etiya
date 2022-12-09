@@ -1,6 +1,8 @@
 package com.etiya.ecommercedemopair1.repository.abstracts;
 
+import com.etiya.ecommercedemopair1.business.dtos.response.cart.GetCartResponse;
 import com.etiya.ecommercedemopair1.entities.concretes.Address;
+import com.etiya.ecommercedemopair1.entities.concretes.Cart;
 import com.etiya.ecommercedemopair1.entities.concretes.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,6 +19,11 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     String findEmailByName(String name);
     @Query("select c from Customer c where c.gender=:gender")
     List<Customer> getCustomerWithGender(String gender);
+    @Query("select new com.etiya.ecommercedemopair1.business.dtos.response.cart.GetCartResponse(c.id,c.totalPrice) from Cart" +
+            " as c inner join Customer as cu" +
+            " on c.customer=cu where cu.id=:identity " +
+            "group by c.id,c.totalPrice")
+    GetCartResponse getCartWithCustomerId(int identity);
 
 
 //    @Query("Select c from Address as a join a.User as u join u.Customer as c Where a.id=:id")

@@ -2,6 +2,7 @@ package com.etiya.ecommercedemopair1.business.concretes;
 
 import com.etiya.ecommercedemopair1.business.abstracts.CustomerService;
 import com.etiya.ecommercedemopair1.business.dtos.request.customer.AddCustomerRequest;
+import com.etiya.ecommercedemopair1.business.dtos.response.cart.GetCartResponse;
 import com.etiya.ecommercedemopair1.business.dtos.response.customer.GetCustomerResponse;
 import com.etiya.ecommercedemopair1.core.util.mapping.ModelMapperService;
 import com.etiya.ecommercedemopair1.entities.concretes.Customer;
@@ -63,5 +64,10 @@ public class CustomerManager implements CustomerService {
         GetCustomerResponse getCustomerResponse = modelMapperService.getMapperforResponse().map(savedCustomer,GetCustomerResponse.class);
 
         return getCustomerResponse;
+    }
+
+    @Override
+    public GetCartResponse getCartWithCustomerId(int identity) {
+        return customerRepository.getCartWithCustomerId(identity);
     }
 }

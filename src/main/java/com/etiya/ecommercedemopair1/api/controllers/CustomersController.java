@@ -3,6 +3,7 @@ package com.etiya.ecommercedemopair1.api.controllers;
 import com.etiya.ecommercedemopair1.business.abstracts.CustomerService;
 import com.etiya.ecommercedemopair1.business.constants.Paths;
 import com.etiya.ecommercedemopair1.business.dtos.request.customer.AddCustomerRequest;
+import com.etiya.ecommercedemopair1.business.dtos.response.cart.GetCartResponse;
 import com.etiya.ecommercedemopair1.business.dtos.response.customer.GetCustomerResponse;
 import com.etiya.ecommercedemopair1.entities.concretes.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,11 @@ public class CustomersController {
 
         return new ResponseEntity<GetCustomerResponse>(customerService.addCustomerWithCustomerInfo(addCustomerRequest),
                 HttpStatus.CREATED);
+    }
+    @GetMapping("/getCartWithCustomerId")
+    public GetCartResponse getCartWithCustomerId(int id)
+    {
+        return customerService.getCartWithCustomerId(id);
     }
 
 

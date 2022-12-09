@@ -4,6 +4,7 @@ import com.etiya.ecommercedemopair1.business.abstracts.AddressService;
 import com.etiya.ecommercedemopair1.business.constants.Paths;
 import com.etiya.ecommercedemopair1.business.dtos.request.address.AddAddressRequest;
 import com.etiya.ecommercedemopair1.business.dtos.response.address.GetAddressResponse;
+import com.etiya.ecommercedemopair1.business.dtos.response.order.GetOrderResponse;
 import com.etiya.ecommercedemopair1.entities.concretes.Address;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,5 +42,10 @@ public class AddressesController {
     @PostMapping("addAddressGetInfo")
     public ResponseEntity<GetAddressResponse> addAddressWithInfo(@RequestBody AddAddressRequest addAddressRequest) {
         return new ResponseEntity<GetAddressResponse>(this.addressService.getAddressWithInfo(addAddressRequest), HttpStatus.CREATED);
+    }
+    @GetMapping("/getOrderWithAddressId")
+    public List<GetOrderResponse> getOrderWithAddressId(int id)
+    {
+        return addressService.getOrderWithAddressId(id);
     }
 }

@@ -18,4 +18,8 @@ public class Messages {
         public static final String categoryNameExists="This category already exists";
         public static final String categoryExistsInProduct="This category doesn't exist. Could not be added product";
     }
+    public static class ProductCategory{
+        public static final String categoryExistsInProduct="This category hasn't any product";
+
+    }
 }

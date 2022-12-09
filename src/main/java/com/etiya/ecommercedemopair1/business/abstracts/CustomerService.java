@@ -1,6 +1,7 @@
 package com.etiya.ecommercedemopair1.business.abstracts;
 
 import com.etiya.ecommercedemopair1.business.dtos.request.customer.AddCustomerRequest;
+import com.etiya.ecommercedemopair1.business.dtos.response.cart.GetCartResponse;
 import com.etiya.ecommercedemopair1.business.dtos.response.customer.GetCustomerResponse;
 import com.etiya.ecommercedemopair1.entities.concretes.Customer;
 import org.springframework.data.repository.query.Param;
@@ -18,5 +19,6 @@ public interface CustomerService {
     void addCustomer(AddCustomerRequest addCustomerRequest); // Sadece Request'li görelim.
 
     GetCustomerResponse addCustomerWithCustomerInfo(AddCustomerRequest addCustomerRequest); // Bir de Response'lu görelim.addCustomer gibi.
+    GetCartResponse getCartWithCustomerId(int identity);
 
 }

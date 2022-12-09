@@ -1,5 +1,6 @@
 package com.etiya.ecommercedemopair1.business.concretes;
 
+import com.etiya.ecommercedemopair1.business.abstracts.ProductCategoryService;
 import com.etiya.ecommercedemopair1.business.abstracts.ProductService;
 import com.etiya.ecommercedemopair1.business.constants.Messages;
 import com.etiya.ecommercedemopair1.business.dtos.request.product.AddProductRequest;
@@ -17,10 +18,20 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class ProductManager implements ProductService {
-    private final ProductRepository productRepository;
+    @Autowired
+    private  ProductRepository productRepository;
+    @Autowired
     private CategoryRepository categoryRepository;
-    private final ModelMapperService modelMapperService;
+    @Autowired
+    private ProductCategoryService productCategoryService;
+    @Autowired
+    private  ModelMapperService modelMapperService;
 
+
+
+
+    public ProductManager() {
+    }
 
     @Override
     public List<Product> getAll() {
@@ -71,6 +82,19 @@ public class ProductManager implements ProductService {
         return getProductResponse;
     }
 
+    @Override
+    public List<GetProductResponse> getProductCategories(int id) {
+        checkCategoryId(id);
+        return productRepository.getProductCategories(id);
+    }
+
+    public void checkCategoryId(int id)
+    {
+        boolean isExists = productCategoryService.existsByCategoryId(id);
+        if (!isExists) {
+            throw new RuntimeException(Messages.ProductCategory.categoryExistsInProduct);
+        }
+    }
     public void checkCategoryWithId(int id) {
         boolean isExists = categoryRepository.existsById(id);
         if (!isExists) {

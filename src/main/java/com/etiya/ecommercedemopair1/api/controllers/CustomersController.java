@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping(Paths.apiPrefix+"/customers")
+@RequestMapping(Paths.apiPrefix+"customers")
 @RestController
 public class CustomersController {
     private final CustomerService customerService;

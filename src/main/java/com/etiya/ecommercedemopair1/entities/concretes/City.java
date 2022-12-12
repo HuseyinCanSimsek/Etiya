@@ -25,6 +25,9 @@ public class City {
     @Column(name="plate_number")
     private int plateNumber;
 
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.MERGE)
+    @JoinColumn(name = "country_id")
+    private Country country;
 
 
 }

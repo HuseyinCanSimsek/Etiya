@@ -5,7 +5,12 @@ import com.etiya.ecommercedemopair1.business.constants.Messages;
 import com.etiya.ecommercedemopair1.business.dtos.request.address.AddAddressRequest;
 import com.etiya.ecommercedemopair1.business.dtos.response.address.GetAddressResponse;
 import com.etiya.ecommercedemopair1.business.dtos.response.order.GetOrderResponse;
+import com.etiya.ecommercedemopair1.core.util.exceptions.BusinessException;
 import com.etiya.ecommercedemopair1.core.util.mapping.ModelMapperService;
+import com.etiya.ecommercedemopair1.core.util.results.DataResult;
+import com.etiya.ecommercedemopair1.core.util.results.Result;
+import com.etiya.ecommercedemopair1.core.util.results.SuccessDataResult;
+import com.etiya.ecommercedemopair1.core.util.results.SuccessResult;
 import com.etiya.ecommercedemopair1.entities.concretes.*;
 import com.etiya.ecommercedemopair1.repository.abstracts.AddressRepository;
 import com.etiya.ecommercedemopair1.repository.abstracts.CityRepository;
@@ -32,28 +37,28 @@ public class AddressManager implements AddressService {
 
 
 
+
+
     @Override
-    public List<Address> getAddressesByCityName(String name) {
-        return null;
+    public DataResult<Address> getById(int id) {
+        Address address=addressRepository.findById(id).orElseThrow();
+        return new SuccessDataResult<Address>("Address was found",address);
     }
 
     @Override
-    public Address getById(int id) {
-        return null;
+    public DataResult<List<Address>> getAll() {
+        List<Address> addresses=this.addressRepository.findAll();
+        return  new SuccessDataResult<List<Address>>("All addresses were called",addresses);
     }
 
     @Override
-    public List<Address> getAll() {
-        return this.addressRepository.findAll();
+    public Result addAddress(Address address) {
+        Address address1=this.addressRepository.save(address);
+        return new SuccessResult(true,"Address was added successfully");
     }
 
     @Override
-    public void addAddress(Address address) {
-        //this.addressRepository.save(address);
-    }
-
-    @Override
-    public void addAddressInfo(AddAddressRequest addAddressRequest) {
+    public Result addAddressInfo(AddAddressRequest addAddressRequest) {
         // Mapping - > map the attributes from the request to the attributes of the object we created ourselves.
         Address address = modelMapperService.getMapperforRequest().map(addAddressRequest,Address.class);
 
@@ -62,35 +67,38 @@ public class AddressManager implements AddressService {
         //address.getCountry().setId(addAddressRequest.getCountry());
 
 
-        this.addressRepository.save(address);
+       Address address1= this.addressRepository.save(address);
+       return new SuccessResult(true,"Address was added successfully");
 
 
     }
 
     @Override
-    public GetAddressResponse getAddressWithInfo(AddAddressRequest addAddressRequest) {
+    public DataResult<GetAddressResponse> getAddressWithInfo(AddAddressRequest addAddressRequest) {
         Address address =modelMapperService.getMapperforRequest().map(addAddressRequest,Address.class);
 
         checkUserExists(addAddressRequest.getUserId());
-        checkCountryExists(addAddressRequest.getCountryId());
         checkCityExists(addAddressRequest.getCityId());
         Address savedAddress = addressRepository.save(address);
 
         GetAddressResponse getAddressResponse = modelMapperService.getMapperforResponse().map(savedAddress,GetAddressResponse.class);
 
-        return getAddressResponse;
+        return new SuccessDataResult<GetAddressResponse>("Address was added successfully",getAddressResponse);
     }
 
     @Override
-    public List<GetOrderResponse> getOrderWithAddressId(int id) {
-        return addressRepository.getOrderWithAddressId(id);
+    public DataResult<List<GetOrderResponse>> getOrderWithAddressId(int id) {
+
+        List<GetOrderResponse>  orderResponses=addressRepository.getOrderWithAddressId(id);
+        checkOrderExistsAddressId(id);
+      return new SuccessDataResult<List<GetOrderResponse>>("Orders were listed according to addresses",orderResponses);
     }
 
     private void checkUserExists(int id) {
 
         boolean isExist = userService.existsById(id);
         if (!isExist) {
-            throw new RuntimeException(Messages.User.userExists);
+            throw new BusinessException(Messages.User.userExists);
         }
     }
 
@@ -98,7 +106,7 @@ public class AddressManager implements AddressService {
 
         boolean isExist = cityService.existsById(id);
         if (!isExist) {
-            throw new RuntimeException(Messages.City.cityExists);
+            throw new BusinessException(Messages.City.cityExists);
         }
     }
 
@@ -106,14 +114,14 @@ public class AddressManager implements AddressService {
 
         boolean isExist = countryService.existsById(id);
         if (!isExist) {
-            throw new RuntimeException(Messages.Country.countryExists);
+            throw new BusinessException(Messages.Country.countryExists);
         }
     }
     private void checkOrderExistsAddressId(int id)
     {
         boolean isExist = orderService.existsByAddressId(id);
         if (!isExist) {
-            throw new RuntimeException(Messages.Country.countryExists);
+            throw new BusinessException(Messages.Order.orderExists);
         }
 
     }

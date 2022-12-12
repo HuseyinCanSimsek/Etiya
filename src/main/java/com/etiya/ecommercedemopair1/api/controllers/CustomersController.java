@@ -5,6 +5,8 @@ import com.etiya.ecommercedemopair1.business.constants.Paths;
 import com.etiya.ecommercedemopair1.business.dtos.request.customer.AddCustomerRequest;
 import com.etiya.ecommercedemopair1.business.dtos.response.cart.GetCartResponse;
 import com.etiya.ecommercedemopair1.business.dtos.response.customer.GetCustomerResponse;
+import com.etiya.ecommercedemopair1.core.util.results.DataResult;
+import com.etiya.ecommercedemopair1.core.util.results.Result;
 import com.etiya.ecommercedemopair1.entities.concretes.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -25,37 +27,37 @@ public class CustomersController {
     }
 
     @GetMapping("/getAll")
-    public List<Customer> getAll(){
+    public DataResult<List<Customer>> getAll(){
         return customerService.getAll();
     }
     @GetMapping("/getById/{id}")
-    public Customer getById(@PathVariable int id) {
+    public DataResult<Customer> getById(@PathVariable int id) {
         return this.customerService.getById(id);
     }
 
     @GetMapping("/getEmail")
-    public String findEmailByName(@RequestParam("name") String name) {
+    public DataResult<String> findEmailByName(@RequestParam("name") String name) {
         return this.customerService.findEmailByName(name);
     }
 
     @GetMapping("/getCustomerByGender")
-    public List<Customer> getCustomerWithGender(@RequestParam("gender") String gender) {
+    public DataResult<List<Customer>> getCustomerWithGender(@RequestParam("gender") String gender) {
         return this.customerService.getCustomerWithGender(gender);
     }
 
     @PostMapping("/addCustomer")
-    public void addCustomer(@RequestBody AddCustomerRequest addCustomerRequest) {
-        customerService.addCustomer(addCustomerRequest);
+    public Result addCustomer(@RequestBody AddCustomerRequest addCustomerRequest) {
+       return customerService.addCustomer(addCustomerRequest);
     }
 
     @PostMapping("/addCustomerWithCustomerInfo")
-    public ResponseEntity<GetCustomerResponse> addCustomerWithCustomerInfo(@RequestBody AddCustomerRequest addCustomerRequest) {
+    public ResponseEntity<DataResult<GetCustomerResponse>> addCustomerWithCustomerInfo(@RequestBody AddCustomerRequest addCustomerRequest) {
 
-        return new ResponseEntity<GetCustomerResponse>(customerService.addCustomerWithCustomerInfo(addCustomerRequest),
+        return new ResponseEntity<DataResult<GetCustomerResponse>>(customerService.addCustomerWithCustomerInfo(addCustomerRequest),
                 HttpStatus.CREATED);
     }
     @GetMapping("/getCustomerResponseWithGender")
-    public @ResponseBody List<GetCustomerResponse> getCustomerResponsesWithGender(@RequestParam("gender") String gender)
+    public @ResponseBody DataResult<List<GetCustomerResponse>> getCustomerResponsesWithGender(@RequestParam("gender") String gender)
     {
         return customerService.getCustomerResponseWithGender(gender);
     }

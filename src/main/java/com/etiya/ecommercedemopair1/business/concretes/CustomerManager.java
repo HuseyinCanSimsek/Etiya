@@ -5,6 +5,10 @@ import com.etiya.ecommercedemopair1.business.dtos.request.customer.AddCustomerRe
 import com.etiya.ecommercedemopair1.business.dtos.response.cart.GetCartResponse;
 import com.etiya.ecommercedemopair1.business.dtos.response.customer.GetCustomerResponse;
 import com.etiya.ecommercedemopair1.core.util.mapping.ModelMapperService;
+import com.etiya.ecommercedemopair1.core.util.results.DataResult;
+import com.etiya.ecommercedemopair1.core.util.results.Result;
+import com.etiya.ecommercedemopair1.core.util.results.SuccessDataResult;
+import com.etiya.ecommercedemopair1.core.util.results.SuccessResult;
 import com.etiya.ecommercedemopair1.entities.concretes.Customer;
 import com.etiya.ecommercedemopair1.repository.abstracts.CustomerRepository;
 import lombok.AllArgsConstructor;
@@ -21,40 +25,43 @@ public class CustomerManager implements CustomerService {
 
 
     @Override
-    public List<Customer> getAll() {
-        return customerRepository.findAll();
+    public DataResult<List<Customer>> getAll() {
+        List<Customer>customers=customerRepository.findAll();
+        return new SuccessDataResult<List<Customer>>("All customers were called",customers);
     }
 
     @Override
-    public Customer getById(int id) {
-        return customerRepository.findById(id).orElseThrow();
+    public DataResult<Customer> getById(int id) {
+        Customer customer= customerRepository.findById(id).orElseThrow();
+        return new SuccessDataResult<Customer>("Customer was found by given id");
     }
 
     @Override
-    public String findEmailByName(String name) {
-        return this.customerRepository.findEmailByName(name);
+    public DataResult<String> findEmailByName(String name) {
+
+        String email= this.customerRepository.findEmailByName(name);
+        return new SuccessDataResult<String>("Related E Mail address was found by customer name",email);
     }
 
     @Override
-    public List<Customer> getCustomerWithGender(String gender) {
-        return customerRepository.getCustomerWithGender(gender);
+    public DataResult<List<Customer>> getCustomerWithGender(String gender) {
+        List<Customer> customers=customerRepository.getCustomerWithGender(gender);
+        return new SuccessDataResult<List<Customer>>("Customers were found according to gender",customers);
     }
 
     @Override
-    public void addCustomer(AddCustomerRequest addCustomerRequest) {
+    public Result addCustomer(AddCustomerRequest addCustomerRequest) {
         // this.customerRepository.save(customer);
 
         // Mapping
         Customer customer = modelMapperService.getMapperforRequest().map(addCustomerRequest, Customer.class);
-
-
-
-        customerRepository.save(customer);
+        Customer customer1=customerRepository.save(customer);
+      return new SuccessResult(true,"Customer was added successfully");
 
     }
 
     @Override
-    public GetCustomerResponse addCustomerWithCustomerInfo(AddCustomerRequest addCustomerRequest) {
+    public DataResult<GetCustomerResponse> addCustomerWithCustomerInfo(AddCustomerRequest addCustomerRequest) {
         // return this.customerRepository.save(addCustomerRequest);
         // Mapping
         Customer customer = modelMapperService.getMapperforRequest().map(addCustomerRequest, Customer.class);
@@ -63,11 +70,12 @@ public class CustomerManager implements CustomerService {
 
         GetCustomerResponse getCustomerResponse = modelMapperService.getMapperforResponse().map(savedCustomer,GetCustomerResponse.class);
 
-        return getCustomerResponse;
+        return new SuccessDataResult<GetCustomerResponse>("Customer was added successfully",getCustomerResponse);
     }
 
     @Override
-    public List<GetCustomerResponse> getCustomerResponseWithGender(String gender) {
-        return customerRepository.getCustomerResponseWithGender(gender);
+    public DataResult<List<GetCustomerResponse>> getCustomerResponseWithGender(String gender) {
+        List<GetCustomerResponse> customer= customerRepository.getCustomerResponseWithGender(gender);
+        return new SuccessDataResult<List<GetCustomerResponse>>("Customers were found according to themselves gender",customer);
     }
 }

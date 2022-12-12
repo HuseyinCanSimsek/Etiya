@@ -22,4 +22,7 @@ public class Messages {
         public static final String categoryExistsInProduct="This category hasn't any product";
 
     }
+    public static class Order{
+        public static final String orderExists="There is no order according to this address";
+    }
 }

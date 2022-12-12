@@ -39,9 +39,6 @@ public class Address {
     @JoinColumn(name="city_id")
     private City city;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    @JoinColumn(name="country_id")
-    private Country country;
 
     @OneToMany(mappedBy = "address")
     @JsonIgnoreProperties("Address")

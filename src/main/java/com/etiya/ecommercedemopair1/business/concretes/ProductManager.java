@@ -6,6 +6,8 @@ import com.etiya.ecommercedemopair1.business.constants.Messages;
 import com.etiya.ecommercedemopair1.business.dtos.request.product.AddProductRequest;
 import com.etiya.ecommercedemopair1.business.dtos.response.product.GetProductResponse;
 import com.etiya.ecommercedemopair1.core.util.mapping.ModelMapperService;
+import com.etiya.ecommercedemopair1.core.util.results.DataResult;
+import com.etiya.ecommercedemopair1.core.util.results.SuccessDataResult;
 import com.etiya.ecommercedemopair1.entities.concretes.Category;
 import com.etiya.ecommercedemopair1.entities.concretes.Product;
 import com.etiya.ecommercedemopair1.repository.abstracts.CategoryRepository;
@@ -34,36 +36,45 @@ public class ProductManager implements ProductService {
     }
 
     @Override
-    public List<Product> getAll() {
-        return productRepository.findAll();
+    public DataResult<List<Product>> getAll() {
+        List<Product> products=productRepository.findAll();
+        return new SuccessDataResult<List<Product>>("All products were called",products);
     }
 
     @Override
-    public Product getById(int id) {
-        return productRepository.findById(id).orElseThrow();
+    public DataResult<Product> getById(int id) {
+
+        Product product= productRepository.findById(id).orElseThrow();
+        return new SuccessDataResult<>("Product was found",product);
     }
 
     @Override
-    public List<Product> findAllProductsByStockGreaterThanOrderByStockAsc(int stock) {
-        return productRepository.findAllProductsByStockGreaterThanOrderByStockAsc(stock);
+    public DataResult<List<Product>> findAllProductsByStockGreaterThanOrderByStockAsc(int stock) {
+        List<Product> products=productRepository.findAllProductsByStockGreaterThanOrderByStockAsc(stock);
+        return new SuccessDataResult<List<Product>>("Products were listed greater than given stock",products);
     }
 
     @Override
-    public List<Product> findAllByOrderByNameAsc() {
-        return productRepository.findAllByOrderByNameAsc();
+    public DataResult<List<Product>> findAllByOrderByNameAsc() {
+
+        List<Product> products=productRepository.findAllByOrderByNameAsc();
+        return new SuccessDataResult<List<Product>>("Products were sorted ascending",products);
     }
 
     @Override
-    public Product getByName(String name) {
-        return productRepository.findByName(name);
+    public DataResult<Product> getByName(String name) {
+        Product product= productRepository.findByName(name);
+        return  new SuccessDataResult<Product>("Product was found given name from user",product);
     }
     @Override
-    public String getProductNameWithId(int id) {
-        return productRepository.getProductNameWithId(id);
+    public DataResult<String> getProductNameWithId(int id) {
+
+        String productName= productRepository.getProductNameWithId(id);
+        return new SuccessDataResult<>("Product name was found given name from user",productName);
     }
 
     @Override
-    public GetProductResponse addProduct(AddProductRequest addProductRequest) {
+    public DataResult<GetProductResponse> addProduct(AddProductRequest addProductRequest) {
 
         // Mapping
         Product product = modelMapperService.getMapperforRequest().map(addProductRequest,Product.class);
@@ -79,13 +90,14 @@ public class ProductManager implements ProductService {
 
         GetProductResponse getProductResponse = modelMapperService.getMapperforResponse().map(savedProduct,GetProductResponse.class);
 
-        return getProductResponse;
+        return new SuccessDataResult<>("Product was added succesfully",getProductResponse);
     }
 
     @Override
-    public List<GetProductResponse> getProductCategories(int id) {
+    public DataResult<List<GetProductResponse>> getProductCategories(int id) {
         checkCategoryId(id);
-        return productRepository.getProductCategories(id);
+        List<GetProductResponse> getProductResponses=productRepository.getProductCategories(id);
+        return new SuccessDataResult<>("Products was found according to category id");
     }
 
     public void checkCategoryId(int id)

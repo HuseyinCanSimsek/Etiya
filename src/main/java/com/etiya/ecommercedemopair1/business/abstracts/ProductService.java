@@ -2,21 +2,22 @@ package com.etiya.ecommercedemopair1.business.abstracts;
 
 import com.etiya.ecommercedemopair1.business.dtos.request.product.AddProductRequest;
 import com.etiya.ecommercedemopair1.business.dtos.response.product.GetProductResponse;
+import com.etiya.ecommercedemopair1.core.util.results.DataResult;
 import com.etiya.ecommercedemopair1.entities.concretes.Product;
 
 import java.util.List;
 
 public interface ProductService {
-    List<Product> getAll();
-    Product getById(int id);
+    DataResult<List<Product>> getAll();
+    DataResult<Product> getById(int id);
 
-    List<Product> findAllProductsByStockGreaterThanOrderByStockAsc(int stock);
+    DataResult<List<Product>> findAllProductsByStockGreaterThanOrderByStockAsc(int stock);
 
-    List<Product> findAllByOrderByNameAsc();
-    Product getByName(String name);
-    String getProductNameWithId(int id);
+    DataResult<List<Product>> findAllByOrderByNameAsc();
+    DataResult<Product> getByName(String name);
+    DataResult<String> getProductNameWithId(int id);
 
-    GetProductResponse addProduct(AddProductRequest addProductRequest);
-    List<GetProductResponse> getProductCategories(int id);
+    DataResult<GetProductResponse> addProduct(AddProductRequest addProductRequest);
+    DataResult<List<GetProductResponse>> getProductCategories(int id);
 
 }

@@ -22,6 +22,7 @@ public class Invoice {
     @Column(name = "total_invoice_price")
     private double totalInvoicePrice;
     @OneToOne
+    @JoinColumn(name = "order_id")
     private Order order;
 
 

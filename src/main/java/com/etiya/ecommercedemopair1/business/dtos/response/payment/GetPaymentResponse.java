@@ -9,5 +9,6 @@ public class GetPaymentResponse {
     private int Id;
     private int orderId;
     private boolean isVerified;
+
     private int paymentTypeId;
 }

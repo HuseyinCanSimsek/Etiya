@@ -2,6 +2,7 @@ package com.etiya.ecommercedemopair1.business.concretes;
 
 import com.etiya.ecommercedemopair1.business.abstracts.CartService;
 import com.etiya.ecommercedemopair1.entities.concretes.Cart;
+import com.etiya.ecommercedemopair1.entities.concretes.Product;
 import com.etiya.ecommercedemopair1.repository.abstracts.CartRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,5 +19,10 @@ public class CartManager implements CartService {
     @Override
     public List<Cart> findAll() {
         return cartRepository.findAll();
+    }
+
+    @Override
+    public List<Product> getProductsWithCartId(int identity) {
+        return cartRepository.getProductsWithCartId(identity);
     }
 }

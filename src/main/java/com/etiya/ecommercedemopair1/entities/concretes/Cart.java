@@ -26,7 +26,7 @@ public class Cart {
     private Customer customer;
 
     @OneToMany(mappedBy = "cart")
-    private List<OrderDetail> orderDetails;
+    private List<Order> orders;
 
     @OneToMany(mappedBy="cart")
     private List<ProductCart> productCarts;

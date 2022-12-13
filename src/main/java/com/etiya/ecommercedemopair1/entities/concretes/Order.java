@@ -22,9 +22,8 @@ public class Order {
 
     @Column(name="order_date")
     private Date orderDate;
-
-    @Column(name="payment_method")
-    private String paymentMethod;
+    @Column(name="total_price")
+    private double totalPrice;
 
     @Column(name="isCompleted")
     private boolean isCompleted;
@@ -34,13 +33,18 @@ public class Order {
     @JsonBackReference
     private Address address;
 
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "order")
     private List<OrderDelivery> orderDeliveries;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "order")
-    private List<OrderDetail> orderDetails;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "order")
     private List<Payment> payments;
+
+    @ManyToOne
+    @JoinColumn(name="cart_id")
+    private Cart cart;
+
+
 
 }

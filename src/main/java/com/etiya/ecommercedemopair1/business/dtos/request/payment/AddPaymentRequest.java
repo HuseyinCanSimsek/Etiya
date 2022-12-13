@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
@@ -17,5 +18,6 @@ public class AddPaymentRequest {
 
     private int orderId;
     private boolean isVerified;
+    @NotNull
     private int paymentTypeId;
 }

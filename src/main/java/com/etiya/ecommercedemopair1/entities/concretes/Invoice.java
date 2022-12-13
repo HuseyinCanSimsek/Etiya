@@ -16,7 +16,7 @@ public class Invoice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int Id;
+    private int id;
     @Column(name = "invoice_date")
     private LocalDateTime invoiceDate;
     @Column(name = "total_invoice_price")

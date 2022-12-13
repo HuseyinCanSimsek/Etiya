@@ -4,6 +4,7 @@ import com.etiya.ecommercedemopair1.business.abstracts.CartService;
 import com.etiya.ecommercedemopair1.business.abstracts.InvoiceService;
 import com.etiya.ecommercedemopair1.business.abstracts.OrderService;
 import com.etiya.ecommercedemopair1.business.abstracts.ProductService;
+import com.etiya.ecommercedemopair1.business.dtos.request.invoice.AddInvoiceRequest;
 import com.etiya.ecommercedemopair1.business.dtos.request.order.AddOrderRequest;
 import com.etiya.ecommercedemopair1.business.dtos.response.order.GetOrderResponse;
 import com.etiya.ecommercedemopair1.business.dtos.response.product.GetProductResponse;
@@ -47,13 +48,8 @@ public class OrderManager implements OrderService {
 
 
        Order savedOrder= orderRepository.save(order);
-        Invoice invoice=new Invoice();
-        invoice.setInvoiceDate(LocalDateTime.now());
-        invoice.setTotalInvoicePrice(savedOrder.getTotalPrice());
-
-        System.out.println(savedOrder.getId());
-
-        invoice.setOrder(orderRepository.findById(savedOrder.getId()).orElseThrow());
+        AddInvoiceRequest addInvoiceRequest=new AddInvoiceRequest(LocalDateTime.now(), savedOrder.getTotalPrice(), savedOrder.getId());
+        Invoice invoice=this.modelMapperService.getMapperforRequest().map(addInvoiceRequest,Invoice.class);
 
         invoiceService.addInvoice(invoice);
 

@@ -21,7 +21,7 @@ public class Invoice {
     private LocalDateTime invoiceDate;
     @Column(name = "total_invoice_price")
     private double totalInvoicePrice;
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "order_id")
     private Order order;
 

@@ -14,5 +14,4 @@ public class GetAddressResponse {
     private String title;
     private int userId;
     private int cityId;
-    private int countryId;
 }

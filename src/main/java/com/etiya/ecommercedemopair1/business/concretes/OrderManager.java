@@ -32,7 +32,7 @@ public class OrderManager implements OrderService {
     @Override
 
     public Result addOrder(AddOrderRequest addOrderRequest) {
-        checkProductAtCart(addOrderRequest.getProductId());
+        checkProductAtCart(addOrderRequest.getCartId());
         Order order=modelMapperService.getMapperforRequest().map(addOrderRequest,Order.class);
 
        Order savedOrder= orderRepository.save(order);

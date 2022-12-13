@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface CartRepository extends JpaRepository<Cart,Integer> {
-    @Query(value = "select * from products as p inner join  " +
-            "    product_cart as pc on p.id=pc.product_id "+
-            "      inner join carts as c on pc.cart_id=c.id where c.id in(:identity)",nativeQuery = true)
+    @Query(value = "select p from Product as p  join  " +
+            "    ProductCart as pc on p.id=pc.product.id "+
+            "      inner join Cart as c on pc.cart.id=c.id where c.id in(:identity)",nativeQuery = false)
     List<Product> getProductsWithCartId(int identity);
 }

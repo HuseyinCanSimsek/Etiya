@@ -25,7 +25,6 @@ public class Invoice {
     private double totalInvoicePrice;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "order_id",referencedColumnName = "id")
-    @JsonFormat
     private Order order;
 
 

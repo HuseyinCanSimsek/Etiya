@@ -1,5 +1,7 @@
 package com.etiya.ecommercedemopair1.entities.concretes;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,6 +28,7 @@ public class Cart {
     private Customer customer;
 
     @OneToMany(mappedBy = "cart")
+    @JsonIgnore
     private List<Order> orders;
 
     @OneToMany(mappedBy="cart")

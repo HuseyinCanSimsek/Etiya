@@ -33,6 +33,7 @@ public class InvoiceManager implements InvoiceService {
         Invoice invoice1=new Invoice();
         invoice1.setInvoiceDate(invoice.getInvoiceDate());
         invoice1.setTotalInvoicePrice(invoice.getTotalInvoicePrice());
+        invoice1.setOrder(invoice.getOrder());
         Invoice savedInvoice=invoiceRepository.save(invoice1);
         return new SuccessResult("Invoice was created succesfully");
     }

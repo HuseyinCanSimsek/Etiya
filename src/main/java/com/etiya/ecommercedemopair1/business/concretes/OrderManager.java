@@ -57,6 +57,7 @@ public class OrderManager implements OrderService {
 
 
        Order savedOrder= this.orderRepository.save(order);
+
         Invoice invoice=new Invoice();
         invoice.setInvoiceDate(LocalDateTime.now());
         invoice.setTotalInvoicePrice(savedOrder.getTotalPrice());

@@ -94,6 +94,11 @@ public class AddressManager implements AddressService {
       return new SuccessDataResult<List<GetOrderResponse>>("Orders were listed according to addresses",orderResponses);
     }
 
+    @Override
+    public boolean existsById(int id) {
+        return addressRepository.existsById(id);
+    }
+
     private void checkUserExists(int id) {
 
         boolean isExist = userService.existsById(id);

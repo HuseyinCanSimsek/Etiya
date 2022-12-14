@@ -19,5 +19,6 @@ public interface AddressRepository extends JpaRepository<Address, Integer> {
             " on o.address=a where a.id in(:identity) " +
             "group by o.id,o.orderDate,o.totalPrice,o.isCompleted")
     List<GetOrderResponse> getOrderWithAddressId(int identity);
+    boolean existsById(int id);
 
 }

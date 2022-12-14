@@ -1,6 +1,7 @@
 package com.etiya.ecommercedemopair1.entities.concretes;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,12 +37,12 @@ public class Order implements Serializable {
     private Address address;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "order")
-    @JsonIgnoreProperties
+    @JsonIgnore
     private List<OrderDelivery> orderDeliveries;
 
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "order")
-    @JsonIgnoreProperties
+    @JsonIgnore
     private List<Payment> payments;
 
     @ManyToOne

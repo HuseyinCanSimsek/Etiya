@@ -22,5 +22,6 @@ public interface AddressService {
 
     DataResult<GetAddressResponse> getAddressWithInfo(AddAddressRequest addAddressRequest);
     DataResult<List<GetOrderResponse>> getOrderWithAddressId(int id);
+    boolean existsById(int id);
 
 }

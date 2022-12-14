@@ -1,9 +1,6 @@
 package com.etiya.ecommercedemopair1.business.concretes;
 
-import com.etiya.ecommercedemopair1.business.abstracts.CartService;
-import com.etiya.ecommercedemopair1.business.abstracts.InvoiceService;
-import com.etiya.ecommercedemopair1.business.abstracts.OrderService;
-import com.etiya.ecommercedemopair1.business.abstracts.ProductService;
+import com.etiya.ecommercedemopair1.business.abstracts.*;
 import com.etiya.ecommercedemopair1.business.dtos.request.invoice.AddInvoiceRequest;
 import com.etiya.ecommercedemopair1.business.dtos.request.order.AddOrderRequest;
 import com.etiya.ecommercedemopair1.business.dtos.response.order.GetOrderResponse;
@@ -20,6 +17,7 @@ import com.etiya.ecommercedemopair1.repository.abstracts.OrderRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,35 +34,39 @@ public class OrderManager implements OrderService {
     private CartService cartService;
     private ModelMapperService modelMapperService;
     private InvoiceService invoiceService;
+    private AddressService addressService;
+
     @Autowired
-    public OrderManager(OrderRepository orderRepository, ProductService productService, CartService cartService, ModelMapperService modelMapperService, InvoiceService invoiceService) {
+    public OrderManager( OrderRepository orderRepository, ProductService productService, CartService cartService, ModelMapperService modelMapperService, InvoiceService invoiceService, @Lazy AddressService addressService) {
         this.orderRepository = orderRepository;
         this.productService = productService;
         this.cartService = cartService;
         this.modelMapperService = modelMapperService;
         this.invoiceService = invoiceService;
+        this.addressService=addressService;
 
     }
-
-
 
 
     @Override
     @Transactional
     public Result addOrder(AddOrderRequest addOrderRequest) {
         checkProductAtCart(addOrderRequest.getCartId());
-        Order order=modelMapperService.getMapperforRequest().map(addOrderRequest,Order.class);
+        checkAddressIfExists(addOrderRequest.getAddressId());
+
+        Order order = modelMapperService.getMapperforRequest().map(addOrderRequest, Order.class);
 
 
-       Order savedOrder= this.orderRepository.save(order);
+        Order savedOrder = this.orderRepository.save(order);
 
-        Invoice invoice=new Invoice();
+        Invoice invoice = new Invoice();
         invoice.setInvoiceDate(LocalDateTime.now());
         invoice.setTotalInvoicePrice(savedOrder.getTotalPrice());
         invoice.setOrder(savedOrder);
         invoiceService.addInvoice(invoice);
 
         return new SuccessResult("Order was added successfully");
+
     }
 
     @Override
@@ -78,13 +80,21 @@ public class OrderManager implements OrderService {
     }
 
 
-
-    public void checkProductAtCart(int id)
-    {
-        List<Product> products=cartService.getProductsWithCartId(id);
-        if(products.size()==0)
-        {
+    public void checkProductAtCart(int id) {
+        List<Product> products = cartService.getProductsWithCartId(id);
+        if (products.size() == 0) {
             throw new BusinessException("There is no product in cart.Check your cart");
         }
     }
+    public void checkAddressIfExists(int id)
+    {
+        boolean isExists=addressService.existsById(id);
+        if(!isExists)
+        {
+            throw new BusinessException("This address could not be found");
+        }
+
+    }
+
+
 }

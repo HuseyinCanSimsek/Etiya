@@ -29,16 +29,25 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 public class OrderManager implements OrderService {
-    @Autowired
+
     private OrderRepository orderRepository;
     private ProductService productService;
     private CartService cartService;
     private ModelMapperService modelMapperService;
     private InvoiceService invoiceService;
     @Autowired
-    private InvoiceRepository invoiceRepository;
+    public OrderManager(OrderRepository orderRepository, ProductService productService, CartService cartService, ModelMapperService modelMapperService, InvoiceService invoiceService) {
+        this.orderRepository = orderRepository;
+        this.productService = productService;
+        this.cartService = cartService;
+        this.modelMapperService = modelMapperService;
+        this.invoiceService = invoiceService;
+
+    }
+
+
+
 
     @Override
     @Transactional
@@ -47,10 +56,11 @@ public class OrderManager implements OrderService {
         Order order=modelMapperService.getMapperforRequest().map(addOrderRequest,Order.class);
 
 
-       Order savedOrder= orderRepository.save(order);
-        AddInvoiceRequest addInvoiceRequest=new AddInvoiceRequest(LocalDateTime.now(), savedOrder.getTotalPrice(), savedOrder.getId());
-        Invoice invoice=this.modelMapperService.getMapperforRequest().map(addInvoiceRequest,Invoice.class);
-
+       Order savedOrder= this.orderRepository.save(order);
+        Invoice invoice=new Invoice();
+        invoice.setInvoiceDate(LocalDateTime.now());
+        invoice.setTotalInvoicePrice(savedOrder.getTotalPrice());
+        invoice.setOrder(savedOrder);
         invoiceService.addInvoice(invoice);
 
         return new SuccessResult("Order was added successfully");

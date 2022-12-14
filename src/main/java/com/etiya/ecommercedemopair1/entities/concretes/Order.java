@@ -33,7 +33,6 @@ public class Order {
     @JsonBackReference
     private Address address;
 
-
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "order")
     private List<OrderDelivery> orderDeliveries;
 
@@ -44,6 +43,8 @@ public class Order {
     @ManyToOne
     @JoinColumn(name="cart_id")
     private Cart cart;
+
+
 
 
 

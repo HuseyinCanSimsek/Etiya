@@ -15,6 +15,7 @@ public class GetOrderResponse {
     private int productId;
     private int addressId;
     private int cartId;
+    private int invoiceId;
 
     public GetOrderResponse(int id, Date orderDate, double totalPrice, boolean isCompleted) {
         this.id = id;

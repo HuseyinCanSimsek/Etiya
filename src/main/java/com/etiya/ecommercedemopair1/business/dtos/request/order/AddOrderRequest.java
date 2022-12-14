@@ -10,7 +10,6 @@ import javax.persistence.Column;
 import java.util.Date;
 
 @Data
-@AllArgsConstructor
 public class AddOrderRequest {
 
     private Date orderDate;
@@ -19,4 +18,14 @@ public class AddOrderRequest {
     private int productId;
     private int addressId;
     private int cartId;
+
+
+    public AddOrderRequest(Date orderDate, double totalPrice, boolean isCompleted, int productId, int addressId, int cartId) {
+        this.orderDate = orderDate;
+        this.totalPrice = totalPrice;
+        this.isCompleted = isCompleted;
+        this.productId = productId;
+        this.addressId = addressId;
+        this.cartId = cartId;
+    }
 }

@@ -1,5 +1,7 @@
 package com.etiya.ecommercedemopair1.entities.concretes;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,6 +25,7 @@ public class Invoice {
     private double totalInvoicePrice;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "order_id",referencedColumnName = "id")
+    @JsonFormat
     private Order order;
 
 

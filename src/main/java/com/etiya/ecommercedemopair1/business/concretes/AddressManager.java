@@ -7,6 +7,7 @@ import com.etiya.ecommercedemopair1.business.dtos.response.address.GetAddressRes
 import com.etiya.ecommercedemopair1.business.dtos.response.order.GetOrderResponse;
 import com.etiya.ecommercedemopair1.core.util.exceptions.BusinessException;
 import com.etiya.ecommercedemopair1.core.util.mapping.ModelMapperService;
+import com.etiya.ecommercedemopair1.core.util.messages.MessageService;
 import com.etiya.ecommercedemopair1.core.util.results.DataResult;
 import com.etiya.ecommercedemopair1.core.util.results.Result;
 import com.etiya.ecommercedemopair1.core.util.results.SuccessDataResult;
@@ -33,6 +34,7 @@ public class AddressManager implements AddressService {
     private CountryService countryService;
     private OrderService orderService;
     private final ModelMapperService modelMapperService;
+    private MessageService messageService;
 
 
 
@@ -42,19 +44,19 @@ public class AddressManager implements AddressService {
     @Override
     public DataResult<Address> getById(int id) {
         Address address=addressRepository.findById(id).orElseThrow();
-        return new SuccessDataResult<Address>("Address was found",address);
+        return new SuccessDataResult<Address>(messageService.getMessage(Messages.Address.addressWasFound),address);
     }
 
     @Override
     public DataResult<List<Address>> getAll() {
         List<Address> addresses=this.addressRepository.findAll();
-        return  new SuccessDataResult<List<Address>>("All addresses were called",addresses);
+        return  new SuccessDataResult<List<Address>>(messageService.getMessage(Messages.Address.getAllAddresses),addresses);
     }
 
     @Override
     public Result addAddress(Address address) {
         Address address1=this.addressRepository.save(address);
-        return new SuccessResult(true,"Address was added successfully");
+        return new SuccessResult(messageService.getMessage(Messages.Address.addressSuccessAdded));
     }
 
     @Override
@@ -68,7 +70,7 @@ public class AddressManager implements AddressService {
 
 
        Address address1= this.addressRepository.save(address);
-       return new SuccessResult(true,"Address was added successfully");
+       return new SuccessResult(messageService.getMessage(Messages.Address.addressSuccessAdded));
 
 
     }
@@ -83,7 +85,7 @@ public class AddressManager implements AddressService {
 
         GetAddressResponse getAddressResponse = modelMapperService.getMapperforResponse().map(savedAddress,GetAddressResponse.class);
 
-        return new SuccessDataResult<GetAddressResponse>("Address was added successfully",getAddressResponse);
+        return new SuccessDataResult<GetAddressResponse>(messageService.getMessage(Messages.Address.addressSuccessAdded),getAddressResponse);
     }
 
     @Override
@@ -91,7 +93,7 @@ public class AddressManager implements AddressService {
 
         List<GetOrderResponse>  orderResponses=addressRepository.getOrderWithAddressId(id);
         checkOrderExistsAddressId(id);
-      return new SuccessDataResult<List<GetOrderResponse>>("Orders were listed according to addresses",orderResponses);
+      return new SuccessDataResult<List<GetOrderResponse>>(messageService.getMessage(Messages.Address.ordersListedByAddressId),orderResponses);
     }
 
     @Override
@@ -103,7 +105,7 @@ public class AddressManager implements AddressService {
 
         boolean isExist = userService.existsById(id);
         if (!isExist) {
-            throw new BusinessException(Messages.User.userExists);
+            throw new BusinessException(messageService.getMessage(Messages.User.userExists));
         }
     }
 
@@ -111,7 +113,7 @@ public class AddressManager implements AddressService {
 
         boolean isExist = cityService.existsById(id);
         if (!isExist) {
-            throw new BusinessException(Messages.City.cityExists);
+            throw new BusinessException(messageService.getMessage(Messages.City.cityExists));
         }
     }
 
@@ -126,7 +128,7 @@ public class AddressManager implements AddressService {
     {
         boolean isExist = orderService.existsByAddressId(id);
         if (!isExist) {
-            throw new BusinessException(Messages.Order.orderExists);
+            throw new BusinessException(messageService.getMessage(Messages.Order.orderExists));
         }
 
     }

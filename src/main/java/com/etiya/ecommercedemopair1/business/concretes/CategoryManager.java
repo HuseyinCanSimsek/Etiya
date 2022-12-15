@@ -6,6 +6,7 @@ import com.etiya.ecommercedemopair1.business.dtos.request.category.AddCategoryRe
 import com.etiya.ecommercedemopair1.business.dtos.response.category.GetCategoryResponse;
 import com.etiya.ecommercedemopair1.core.util.exceptions.BusinessException;
 import com.etiya.ecommercedemopair1.core.util.mapping.ModelMapperService;
+import com.etiya.ecommercedemopair1.core.util.messages.MessageService;
 import com.etiya.ecommercedemopair1.core.util.results.DataResult;
 import com.etiya.ecommercedemopair1.core.util.results.SuccessDataResult;
 import com.etiya.ecommercedemopair1.entities.concretes.Category;
@@ -22,19 +23,20 @@ public class CategoryManager implements CategoryService {
 
     private CategoryRepository categoryRepository;
     private final ModelMapperService modelMapperService;
+    private MessageService messageService;
 
     @Override
     public DataResult<List<Category>> getAll() {
 
         List<Category> categories=this.categoryRepository.findAll();
-        return new SuccessDataResult<List<Category>>("All categories were called",categories);
+        return new SuccessDataResult<List<Category>>(categories);
     }
 
     @Override
     public DataResult<Category> getById(int id) {
 
         Category category= this.categoryRepository.findById(id).orElseThrow();
-       return new SuccessDataResult<Category>("Category was found by given id",category);
+       return new SuccessDataResult<Category>(category);
     }
 
     @Override
@@ -43,20 +45,20 @@ public class CategoryManager implements CategoryService {
         List<Category> categories=this.categoryRepository.findAllByName(name);
         checkCategoryByName(categories);
 
-        return new SuccessDataResult<List<Category>>("Categories was found by given name",categories);
+        return new SuccessDataResult<List<Category>>(categories);
     }
 
     private  void checkCategoryByName(List<Category> categories) {
         if(categories.size()==0)
         {
-            throw new BusinessException("Categories were not found according to name");
+            throw new BusinessException(messageService.getMessage(Messages.Category.categoryNameExists));
         }
     }
 
     @Override
     public DataResult<List<Category>> getCategoryWithIdDesc() {
         List<Category> categoriesDesc=this.categoryRepository.getCategoryWithIdDesc();
-        return new SuccessDataResult<>("Categories was sorted by themselves id",categoriesDesc);
+        return new SuccessDataResult<>(categoriesDesc);
     }
 
 
@@ -79,7 +81,7 @@ public class CategoryManager implements CategoryService {
                 new GetCategoryResponse(savedCategory.getId(), savedCategory.getName());
         */
         GetCategoryResponse response = modelMapperService.getMapperforResponse().map(savedCategory, GetCategoryResponse.class);
-        return new SuccessDataResult<GetCategoryResponse>("Category was added successfully",response);
+        return new SuccessDataResult<GetCategoryResponse>(response);
 
     }
 
@@ -92,7 +94,7 @@ public class CategoryManager implements CategoryService {
         Category savedCategory = this.categoryRepository.save(category);
 
         GetCategoryResponse getCategoryResponse = modelMapperService.getMapperforResponse().map(savedCategory, GetCategoryResponse.class);
-        return new SuccessDataResult<GetCategoryResponse>("Category was added succesfully",getCategoryResponse);
+        return new SuccessDataResult<GetCategoryResponse>(getCategoryResponse);
 
     }
 
@@ -100,7 +102,7 @@ public class CategoryManager implements CategoryService {
         List<Category> categories = categoryRepository.findAllByName(category.getName());
         if(categories.size()==0)
         {
-            throw new BusinessException("Categories were not found given name");
+            throw new BusinessException(messageService.getMessage(Messages.Category.categoryNameExists));
         }
 
     }

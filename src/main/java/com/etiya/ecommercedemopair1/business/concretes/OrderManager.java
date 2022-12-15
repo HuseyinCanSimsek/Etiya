@@ -1,11 +1,13 @@
 package com.etiya.ecommercedemopair1.business.concretes;
 
 import com.etiya.ecommercedemopair1.business.abstracts.*;
+import com.etiya.ecommercedemopair1.business.constants.Messages;
 import com.etiya.ecommercedemopair1.business.dtos.request.order.AddOrderRequest;
 import com.etiya.ecommercedemopair1.business.dtos.request.productcategory.AddProductCartRequest;
 import com.etiya.ecommercedemopair1.business.dtos.response.productcart.GetProductCartResponse;
 import com.etiya.ecommercedemopair1.core.util.exceptions.BusinessException;
 import com.etiya.ecommercedemopair1.core.util.mapping.ModelMapperService;
+import com.etiya.ecommercedemopair1.core.util.messages.MessageService;
 import com.etiya.ecommercedemopair1.core.util.results.Result;
 import com.etiya.ecommercedemopair1.core.util.results.SuccessResult;
 import com.etiya.ecommercedemopair1.entities.concretes.*;
@@ -30,15 +32,16 @@ public class OrderManager implements OrderService {
     private ModelMapperService modelMapperService;
     private InvoiceService invoiceService;
     private AddressService addressService;
-
+    private MessageService messageService;
     @Autowired
-    public OrderManager( OrderRepository orderRepository, ProductService productService, CartService cartService, ModelMapperService modelMapperService, InvoiceService invoiceService, @Lazy AddressService addressService) {
+    public OrderManager( OrderRepository orderRepository, ProductService productService, CartService cartService, ModelMapperService modelMapperService, InvoiceService invoiceService, @Lazy AddressService addressService,MessageService messageService) {
         this.orderRepository = orderRepository;
         this.productService = productService;
         this.cartService = cartService;
         this.modelMapperService = modelMapperService;
         this.invoiceService = invoiceService;
         this.addressService=addressService;
+        this.messageService=messageService;
 
     }
 
@@ -68,7 +71,7 @@ public class OrderManager implements OrderService {
         invoice.getOrder().getCart().setProductCarts(productCarts);
         invoiceService.addInvoice(invoice);
 
-        return new SuccessResult("Order was added successfully");
+        return new SuccessResult(messageService.getMessage(Messages.Order.orderAdded));
 
     }
 
@@ -86,7 +89,7 @@ public class OrderManager implements OrderService {
     public void checkProductAtCart(int id) {
         List<Product> products = cartService.getProductsWithCartId(id);
         if (products.size() == 0) {
-            throw new BusinessException("There is no product in cart.Check your cart");
+            throw new BusinessException(messageService.getMessage(Messages.Cart.productExists));
         }
     }
     public void checkAddressIfExists(int id)
@@ -94,7 +97,7 @@ public class OrderManager implements OrderService {
         boolean isExists=addressService.existsById(id);
         if(!isExists)
         {
-            throw new BusinessException("This address could not be found");
+            throw new BusinessException(messageService.getMessage(Messages.Address.addressExists));
         }
 
     }

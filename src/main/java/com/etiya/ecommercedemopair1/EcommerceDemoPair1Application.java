@@ -42,7 +42,7 @@ public class EcommerceDemoPair1Application {
 	public ResourceBundleMessageSource resourceBundleMessageSource()
 	{
 		ResourceBundleMessageSource resourceBundleMessageSource=new ResourceBundleMessageSource();
-		resourceBundleMessageSource.setBasename("message");
+		resourceBundleMessageSource.setBasename("messages");
 		return resourceBundleMessageSource;
 	}
 	@Bean

@@ -45,7 +45,7 @@ public class Order implements Serializable {
     @JsonIgnore
     private List<Payment> payments;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name="cart_id")
     private Cart cart;
 

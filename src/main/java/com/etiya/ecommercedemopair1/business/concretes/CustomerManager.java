@@ -1,10 +1,13 @@
 package com.etiya.ecommercedemopair1.business.concretes;
 
 import com.etiya.ecommercedemopair1.business.abstracts.CustomerService;
+import com.etiya.ecommercedemopair1.business.constants.Messages;
 import com.etiya.ecommercedemopair1.business.dtos.request.customer.AddCustomerRequest;
 import com.etiya.ecommercedemopair1.business.dtos.response.cart.GetCartResponse;
 import com.etiya.ecommercedemopair1.business.dtos.response.customer.GetCustomerResponse;
 import com.etiya.ecommercedemopair1.core.util.mapping.ModelMapperService;
+import com.etiya.ecommercedemopair1.core.util.messages.MessageManager;
+import com.etiya.ecommercedemopair1.core.util.messages.MessageService;
 import com.etiya.ecommercedemopair1.core.util.results.DataResult;
 import com.etiya.ecommercedemopair1.core.util.results.Result;
 import com.etiya.ecommercedemopair1.core.util.results.SuccessDataResult;
@@ -13,6 +16,10 @@ import com.etiya.ecommercedemopair1.entities.concretes.Customer;
 import com.etiya.ecommercedemopair1.repository.abstracts.CustomerRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +29,7 @@ import java.util.List;
 public class CustomerManager implements CustomerService {
     private CustomerRepository customerRepository;
     private ModelMapperService modelMapperService;
+    private MessageService messageService;
 
 
     @Override
@@ -77,5 +85,10 @@ public class CustomerManager implements CustomerService {
     public DataResult<List<GetCustomerResponse>> getCustomerResponseWithGender(String gender) {
         List<GetCustomerResponse> customer= customerRepository.getCustomerResponseWithGender(gender);
         return new SuccessDataResult<List<GetCustomerResponse>>("Customers were found according to themselves gender",customer);
+    }
+
+    @Override
+    public Slice<Customer> findAllWithSlice(Pageable pageable) {
+        return this.customerRepository.findAllWithSlice(pageable);
     }
 }

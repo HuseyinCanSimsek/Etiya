@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 @Service
 @AllArgsConstructor
-public class ProductManager implements ProductService {
+public  class ProductManager implements ProductService {
     @Autowired
     private  ProductRepository productRepository;
     @Autowired
@@ -118,6 +118,11 @@ public class ProductManager implements ProductService {
         if (!isExists) {
             throw new RuntimeException(Messages.Category.categoryExistsInProduct);
         }
+    }
+
+    @Override
+    public Page<Product> findAllWithPagination(Pageable pageable) {
+        return this.productRepository.findAll(pageable);
     }
 
 }

@@ -5,6 +5,8 @@ import com.etiya.ecommercedemopair1.business.dtos.response.customer.GetCustomerR
 import com.etiya.ecommercedemopair1.entities.concretes.Address;
 import com.etiya.ecommercedemopair1.entities.concretes.Cart;
 import com.etiya.ecommercedemopair1.entities.concretes.Customer;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -30,4 +32,10 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 
 //@Query("Select c from Customer c JOIN c.User u on u.id=c.id where u.name=:name")
 //String getEmailByCustomerName(@Param("name") String name);
+
+    @Query("select c from Customer as c")
+    Slice<Customer> findAllWithSlice(Pageable pageable);
+
+
 }
+

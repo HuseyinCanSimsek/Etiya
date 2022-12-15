@@ -34,27 +34,29 @@ public class CustomerManager implements CustomerService {
 
     @Override
     public DataResult<List<Customer>> getAll() {
-        List<Customer>customers=customerRepository.findAll();
-        return new SuccessDataResult<List<Customer>>("All customers were called",customers);
+        List<Customer> customers = customerRepository.findAll();
+        return new SuccessDataResult<List<Customer>>(messageService.getMessage
+                (Messages.Customer.getAllCustomers), customers);
     }
 
     @Override
     public DataResult<Customer> getById(int id) {
-        Customer customer= customerRepository.findById(id).orElseThrow();
-        return new SuccessDataResult<Customer>("Customer was found by given id");
+        Customer customer = customerRepository.findById(id).orElseThrow();
+        return new SuccessDataResult<Customer>(messageService.getMessage
+                (Messages.Customer.getAllCustomers),customer);
     }
 
     @Override
     public DataResult<String> findEmailByName(String name) {
 
-        String email= this.customerRepository.findEmailByName(name);
-        return new SuccessDataResult<String>("Related E Mail address was found by customer name",email);
+        String email = this.customerRepository.findEmailByName(name);
+        return new SuccessDataResult<String>(messageService.getMessage(Messages.Customer.emailByName), email);
     }
 
     @Override
     public DataResult<List<Customer>> getCustomerWithGender(String gender) {
-        List<Customer> customers=customerRepository.getCustomerWithGender(gender);
-        return new SuccessDataResult<List<Customer>>("Customers were found according to gender",customers);
+        List<Customer> customers = customerRepository.getCustomerWithGender(gender);
+        return new SuccessDataResult<List<Customer>>(messageService.getMessage(Messages.Customer.customerWithGender), customers);
     }
 
     @Override
@@ -63,8 +65,8 @@ public class CustomerManager implements CustomerService {
 
         // Mapping
         Customer customer = modelMapperService.getMapperforRequest().map(addCustomerRequest, Customer.class);
-        Customer customer1=customerRepository.save(customer);
-      return new SuccessResult(true,"Customer was added successfully");
+        Customer customer1 = customerRepository.save(customer);
+        return new SuccessResult(true, messageService.getMessage(Messages.Customer.customerWasAdded));
 
     }
 
@@ -76,15 +78,15 @@ public class CustomerManager implements CustomerService {
 
         Customer savedCustomer = customerRepository.save(customer);
 
-        GetCustomerResponse getCustomerResponse = modelMapperService.getMapperforResponse().map(savedCustomer,GetCustomerResponse.class);
+        GetCustomerResponse getCustomerResponse = modelMapperService.getMapperforResponse().map(savedCustomer, GetCustomerResponse.class);
 
-        return new SuccessDataResult<GetCustomerResponse>("Customer was added successfully",getCustomerResponse);
+        return new SuccessDataResult<GetCustomerResponse>(messageService.getMessage(Messages.Customer.customerWasAdded), getCustomerResponse);
     }
 
     @Override
     public DataResult<List<GetCustomerResponse>> getCustomerResponseWithGender(String gender) {
-        List<GetCustomerResponse> customer= customerRepository.getCustomerResponseWithGender(gender);
-        return new SuccessDataResult<List<GetCustomerResponse>>("Customers were found according to themselves gender",customer);
+        List<GetCustomerResponse> customer = customerRepository.getCustomerResponseWithGender(gender);
+        return new SuccessDataResult<List<GetCustomerResponse>>(messageService.getMessage(Messages.Customer.customerWithGender), customer);
     }
 
     @Override

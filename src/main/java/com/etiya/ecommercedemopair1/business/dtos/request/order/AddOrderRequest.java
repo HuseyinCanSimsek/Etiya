@@ -24,11 +24,10 @@ public class AddOrderRequest {
     private int cartId;
 
 
-    public AddOrderRequest(Date orderDate, double totalPrice, boolean isCompleted, int productId, int addressId, int cartId) {
+    public AddOrderRequest(Date orderDate, double totalPrice, boolean isCompleted, int addressId, int cartId) {
         this.orderDate = orderDate;
         this.totalPrice = totalPrice;
         this.isCompleted = isCompleted;
-        this.productId = productId;
         this.addressId = addressId;
         this.cartId = cartId;
     }

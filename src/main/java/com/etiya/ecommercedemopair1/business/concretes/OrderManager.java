@@ -1,21 +1,14 @@
 package com.etiya.ecommercedemopair1.business.concretes;
 
 import com.etiya.ecommercedemopair1.business.abstracts.*;
-import com.etiya.ecommercedemopair1.business.dtos.request.invoice.AddInvoiceRequest;
 import com.etiya.ecommercedemopair1.business.dtos.request.order.AddOrderRequest;
-import com.etiya.ecommercedemopair1.business.dtos.response.order.GetOrderResponse;
-import com.etiya.ecommercedemopair1.business.dtos.response.product.GetProductResponse;
+import com.etiya.ecommercedemopair1.business.dtos.request.productcategory.AddProductCartRequest;
 import com.etiya.ecommercedemopair1.core.util.exceptions.BusinessException;
 import com.etiya.ecommercedemopair1.core.util.mapping.ModelMapperService;
 import com.etiya.ecommercedemopair1.core.util.results.Result;
 import com.etiya.ecommercedemopair1.core.util.results.SuccessResult;
-import com.etiya.ecommercedemopair1.entities.concretes.Invoice;
-import com.etiya.ecommercedemopair1.entities.concretes.Order;
-import com.etiya.ecommercedemopair1.entities.concretes.Product;
-import com.etiya.ecommercedemopair1.repository.abstracts.InvoiceRepository;
+import com.etiya.ecommercedemopair1.entities.concretes.*;
 import com.etiya.ecommercedemopair1.repository.abstracts.OrderRepository;
-import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -23,8 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderManager implements OrderService {
@@ -53,9 +47,16 @@ public class OrderManager implements OrderService {
     public Result addOrder(AddOrderRequest addOrderRequest) {
         checkProductAtCart(addOrderRequest.getCartId());
         checkAddressIfExists(addOrderRequest.getAddressId());
+        List<Product> products=orderRepository.getProductsAtOrderWithCartId(addOrderRequest.getCartId());
+        List<AddProductCartRequest> addProductCartRequests=new ArrayList<>();
+        for(Product p:products)
+        {
+            addProductCartRequests.add(new AddProductCartRequest(p.getId(),addOrderRequest.getCartId()));
+        }
 
         Order order = modelMapperService.getMapperforRequest().map(addOrderRequest, Order.class);
 
+        List<ProductCart> productCarts=addProductCartRequests.stream().map(addProductCartRequest-> this.modelMapperService.getMapperforRequest().map(addProductCartRequest,ProductCart.class)).collect(Collectors.toList());
 
         Order savedOrder = this.orderRepository.save(order);
 
@@ -63,6 +64,7 @@ public class OrderManager implements OrderService {
         invoice.setInvoiceDate(LocalDateTime.now());
         invoice.setTotalInvoicePrice(savedOrder.getTotalPrice());
         invoice.setOrder(savedOrder);
+        invoice.getOrder().getCart().setProductCarts(productCarts);
         invoiceService.addInvoice(invoice);
 
         return new SuccessResult("Order was added successfully");

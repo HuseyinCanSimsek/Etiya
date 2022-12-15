@@ -1,5 +1,6 @@
 package com.etiya.ecommercedemopair1.entities.concretes;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
@@ -33,9 +34,11 @@ public class Product {
 
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "product")
+    @JsonIgnore
     private List<ProductCategory> productCategories;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "product")
+    @JsonIgnore
     private List<ProductCart> productCarts;
 
 

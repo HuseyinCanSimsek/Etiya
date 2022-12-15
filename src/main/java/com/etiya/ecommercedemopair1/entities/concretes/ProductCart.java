@@ -25,6 +25,5 @@ public class ProductCart {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="product_id")
-    @JsonBackReference
     private Product product;
 }

@@ -3,6 +3,7 @@ package com.etiya.ecommercedemopair1.business.concretes;
 import com.etiya.ecommercedemopair1.business.abstracts.*;
 import com.etiya.ecommercedemopair1.business.dtos.request.order.AddOrderRequest;
 import com.etiya.ecommercedemopair1.business.dtos.request.productcategory.AddProductCartRequest;
+import com.etiya.ecommercedemopair1.business.dtos.response.productcart.GetProductCartResponse;
 import com.etiya.ecommercedemopair1.core.util.exceptions.BusinessException;
 import com.etiya.ecommercedemopair1.core.util.mapping.ModelMapperService;
 import com.etiya.ecommercedemopair1.core.util.results.Result;
@@ -48,15 +49,15 @@ public class OrderManager implements OrderService {
         checkProductAtCart(addOrderRequest.getCartId());
         checkAddressIfExists(addOrderRequest.getAddressId());
         List<Product> products=orderRepository.getProductsAtOrderWithCartId(addOrderRequest.getCartId());
-        List<AddProductCartRequest> addProductCartRequests=new ArrayList<>();
-        for(Product p:products)
+        List<GetProductCartResponse> getProductCartResponses=new ArrayList<>();
+        for(Product product:products)
         {
-            addProductCartRequests.add(new AddProductCartRequest(p.getId(),addOrderRequest.getCartId()));
+            getProductCartResponses.add(new GetProductCartResponse(product.getId(),addOrderRequest.getCartId()));
         }
 
         Order order = modelMapperService.getMapperforRequest().map(addOrderRequest, Order.class);
 
-        List<ProductCart> productCarts=addProductCartRequests.stream().map(addProductCartRequest-> this.modelMapperService.getMapperforRequest().map(addProductCartRequest,ProductCart.class)).collect(Collectors.toList());
+        List<ProductCart> productCarts=getProductCartResponses.stream().map(getProductCartResponse-> this.modelMapperService.getMapperforResponse().map(getProductCartResponse,ProductCart.class)).collect(Collectors.toList());
 
         Order savedOrder = this.orderRepository.save(order);
 

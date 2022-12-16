@@ -53,5 +53,9 @@ public class Messages {
       public static String productGreaterThanStock="productGreaterThanStock";
 
     }
+    public static class Invoice
+    {
+        public static String invoiceAdded="invoiceAdded";
+    }
 
 }

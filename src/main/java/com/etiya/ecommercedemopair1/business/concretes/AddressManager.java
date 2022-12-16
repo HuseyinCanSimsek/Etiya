@@ -67,7 +67,8 @@ public class AddressManager implements AddressService {
         //address.getUser().setId(addAddressRequest.getUser());
         //address.getCity().setId(addAddressRequest.getCity());
         //address.getCountry().setId(addAddressRequest.getCountry());
-
+        checkUserExists(addAddressRequest.getUserId());
+        checkCityExists(addAddressRequest.getCityId());
 
        Address address1= this.addressRepository.save(address);
        return new SuccessResult(messageService.getMessage(Messages.Address.addressSuccessAdded));

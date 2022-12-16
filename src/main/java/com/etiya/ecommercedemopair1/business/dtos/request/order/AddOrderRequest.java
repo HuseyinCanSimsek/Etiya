@@ -12,22 +12,14 @@ import java.util.Date;
 @Data
 public class AddOrderRequest {
 
-    private Date orderDate;
 
-    @Positive
-    private double totalPrice;
-    private boolean isCompleted;
-   @Min(value = 0,message = "Select any products")
-    private int productId;
+
    @Min(value = 0,message = "Choose your order address")
     private int addressId;
     private int cartId;
 
 
-    public AddOrderRequest(Date orderDate, double totalPrice, boolean isCompleted, int addressId, int cartId) {
-        this.orderDate = orderDate;
-        this.totalPrice = totalPrice;
-        this.isCompleted = isCompleted;
+    public AddOrderRequest(int addressId, int cartId) {
         this.addressId = addressId;
         this.cartId = cartId;
     }

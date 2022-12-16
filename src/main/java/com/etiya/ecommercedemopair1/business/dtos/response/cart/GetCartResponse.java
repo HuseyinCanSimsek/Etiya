@@ -9,4 +9,5 @@ public class GetCartResponse {
     private int id;
     private double totalPrice;
 
+
 }

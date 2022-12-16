@@ -14,10 +14,10 @@ import java.util.List;
 
 @Repository
 public interface AddressRepository extends JpaRepository<Address, Integer> {
-    @Query("select new com.etiya.ecommercedemopair1.business.dtos.response.order.GetOrderResponse(o.id,o.orderDate,o.totalPrice,o.isCompleted) from Order" +
+    @Query("select new com.etiya.ecommercedemopair1.business.dtos.response.order.GetOrderResponse(o.id,o.isCompleted) from Order" +
             " as o inner join Address as a" +
             " on o.address=a where a.id in(:identity) " +
-            "group by o.id,o.orderDate,o.totalPrice,o.isCompleted")
+            "group by o.id,o.isCompleted")
     List<GetOrderResponse> getOrderWithAddressId(int identity);
     boolean existsById(int id);
 

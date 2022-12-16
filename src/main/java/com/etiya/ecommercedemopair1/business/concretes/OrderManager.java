@@ -18,8 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,9 +68,10 @@ public class OrderManager implements OrderService {
 
         Invoice invoice = new Invoice();
         invoice.setInvoiceDate(LocalDateTime.now());
-        invoice.setTotalInvoicePrice(savedOrder.getTotalPrice());
+        invoice.setTotalInvoicePrice(savedOrder.getCart().getTotalPrice());
         invoice.setOrder(savedOrder);
         invoice.getOrder().getCart().setProductCarts(productCarts);
+        invoice.getOrder().setOrderDate(Date.from(Instant.now()));
         invoiceService.addInvoice(invoice);
 
         return new SuccessResult(messageService.getMessage(Messages.Order.orderAdded));

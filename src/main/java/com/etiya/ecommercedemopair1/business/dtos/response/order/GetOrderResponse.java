@@ -6,21 +6,13 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@AllArgsConstructor
 public class GetOrderResponse {
     private int id;
-    private Date orderDate;
-    private double totalPrice;
     private boolean isCompleted;
-    private int productId;
-    private int addressId;
-    private int cartId;
-    private int invoiceId;
 
-    public GetOrderResponse(int id, Date orderDate, double totalPrice, boolean isCompleted) {
+
+    public GetOrderResponse(int id, boolean isCompleted) {
         this.id = id;
-        this.orderDate = orderDate;
-        this.totalPrice = totalPrice;
-        this.isCompleted = isCompleted;
+        this.isCompleted = true;
     }
 }
